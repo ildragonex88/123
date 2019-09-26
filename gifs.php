@@ -126,8 +126,8 @@ function download($file_source, $file_target) {
     return true;
 }
 mkdir("/app/$yd_files");
-  $result = download($req[3],"$yd_files/prosto.zz");
-$f   = fopen ("$yd_files/prosto.zz","rb");
+  $result = download($req[3],"/app/$yd_files/prosto.zz");
+$f   = fopen ("/app/$yd_files/prosto.zz","rb");
 $freq = fread($f,filesize($f));
 
  }
