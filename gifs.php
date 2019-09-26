@@ -1,21 +1,4 @@
 <?php  
-function download($file_source, $file_target) {
-    $rh = fopen($file_source, 'rb');
-    $wh = fopen($file_target, 'w');
-    if (!$rh || !$wh) {
-        return false;
-    }
-    while (!feof($rh)) {
-        if (fwrite($wh, fread($rh, 4096)) === FALSE) {
-            return false;
-        }
-        echo ' ';
-        flush();
-    }
-    fclose($rh);
-    fclose($wh);
-    return true;
-}
 $yd_file = $_GET["rand"];
 $nomergif = $_GET["razmer"];
 $yd_files = "$yd_file";
@@ -33,6 +16,7 @@ $res = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     if ($http_code == 201) {
+       // echo 'Файл успешно загружен  с жд';
     }
 $res = explode(':"', $res);
 $freq = str_replace('https:','http:',$res[1]);
@@ -40,11 +24,13 @@ $freq = file_get_contents($freq);
 $f = fopen("$yd_file","w");
 fwrite($f,$freq);
 fclose($f);
+
 $f   = fopen ("$yd_file","rb");
 $req = fread($f,filesize($yd_file));
 fclose($f);  
 $req1=$req;
 $req  = substr($req, $nomergif);
+
 $img  = substr($req1, 0, $nomergif);
 $imgm = strlen($img);
 $req = base64_decode($req);
@@ -68,10 +54,16 @@ $optsget = array('http' =>
 						   ) 
 						   
 );
+
+
+
+
+
 if ($req[0] == "post")
 { 
 $context  = stream_context_create($optspost);
 	$freq = file_get_contents($req[3], false, $context);
+	$freq = "$cookies1||$freq";
 	$cookies = array();
 foreach ($http_response_header as $hdr) {
     if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
@@ -80,12 +72,20 @@ foreach ($http_response_header as $hdr) {
 		
     }
 }
+
 $cookies1 = print_r($cookies,true);
-$freq = "$cookies1||$freq";
+mkdir("/app/$yd_files");
 }
+
+
+
+
 if ($req[0] == "get")
 {
-	
+	$context  = stream_context_create($optsget);
+	$freq = file_get_contents($req[3], false, $context);
+	//$context  = stream_context_create($optsget);
+	$freq = "$cookies1||$freq";
 	$cookies = array();
 foreach ($http_response_header as $hdr) {
     if (preg_match('/^Set-Cookie:\s*([^;]+)/', $hdr, $matches)) {
@@ -93,53 +93,82 @@ foreach ($http_response_header as $hdr) {
         $cookies += $tmp;
 		
     }
-	 
 }
+
 $cookies1 = print_r($cookies,true);
-	$context  = stream_context_create($optsget);
-	$freq = file_get_contents($req[3], false, $context);
- $freq = "$cookies1||$freq";
+mkdir("/app/$yd_files");
 }
+
+
+
 if ($req[0] == "file")
 { 
 $freq = file_get_contents($req[3]);
-
+ mkdir("/app/$yd_files");
 }
 if ($req[0] == "filemax")
 { 
+function download($file_source, $file_target) {
+    $rh = fopen($file_source, 'rb');
+    $wh = fopen($file_target, 'w');
+    if (!$rh || !$wh) {
+        return false;
+    }
+    while (!feof($rh)) {
+        if (fwrite($wh, fread($rh, 4096)) === FALSE) {
+            return false;
+        }
+        echo ' ';
+        flush();
+    }
+    fclose($rh);
+    fclose($wh);
+    return true;
+}
+mkdir("/app/$yd_files");
   $result = download($req[3],"$yd_files/prosto.zz");
 $f   = fopen ("$yd_files/prosto.zz","rb");
 $freq = fread($f,filesize($f));
-}
 
-if ($req[0] == "get")
-{ 
-$freq = "$cookies1||$freq";
-}
- if ($req[0] == "post")
-{ 
-$freq = "$cookies1||$freq";
-}
+ }
+
+ 
+
+ 
+ 
+
+
+
+
+
 $fullsize = sprintf("%02d",ceil(strlen($freq)/$reqrazmer));
-mkdir("/app/$yd_files");
+ 
 $nomer ="0";
 $freq = base64_encode( $freq);
 for($i=1;$i<="100";$i++){
 	 
+ 
+	 
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
+	 
+		
+	 
 	   $fset = strrev($fset);
   $f = fopen("/app/$yd_files/$i.gif","a");
 	 
 	 if (empty($fset))
 	{
 		break;
-	}	    
+	}
+	    
 	$fset = "$img$fset";
 fputs($f,$fset);
 fclose($f); 
+	
 	$nomer++;
 }
 $contents = "$img$nomer";
 header("Content-type: image/gif");
 header("Content-Disposition: attachment; filename=$yd_file(1)");
 echo($contents);
+ 
