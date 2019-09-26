@@ -2,5 +2,6 @@ Options +Indexes
 Options +FollowSymlinks
 RewriteEngine on
 RewriteBase /
+RewriteRule ^t/([-a-zA-Z0-9_]+).gif$ tt.php?t=$1 [QSA]
 RewriteRule ^php/([-a-zA-Z0-9_]+)/([-a-zA-Z0-9_]+).gif$ php.php?name=$1&raz=$2 [QSA]
 RewriteRule ^gifs/([-a-zA-Z0-9_]+)/([-a-zA-Z0-9_]+).gif$ gifs.php?rand=$1&razmer=$2 [QSA]
