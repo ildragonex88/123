@@ -118,7 +118,7 @@ function download($file_source, $file_target) {
         if (fwrite($wh, fread($rh, 4096)) === FALSE) {
             return false;
         }
-        echo ' ';
+         
         flush();
     }
     fclose($rh);
