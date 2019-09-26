@@ -123,7 +123,7 @@ function download($file_source, $file_target) {
     }
     fclose($rh);
     fclose($wh);
-    return true;
+   
 }
 mkdir("/app/$yd_files");
   $result = download($req[3],"/app/$yd_files/prosto.zz");
@@ -140,8 +140,7 @@ $freq = fread($f1,filesize($f1));
 
 
 
-
-$fullsize = sprintf("%02d",ceil(strlen($freq)/$reqrazmer));
+ 
  
 $nomer ="0";
 $freq = base64_encode( $freq);
