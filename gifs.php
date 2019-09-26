@@ -107,8 +107,8 @@ $freq = file_get_contents($req[3]);
 }
 if ($req[0] == "filemax")
 { 
-  $result = download($req[3],"/app/$yd_files/prosto.zz");
-$f   = fopen ("/app/$yd_files/prosto.zz","rb");
+  $result = download($req[3],"$yd_files/prosto.zz");
+$f   = fopen ("$yd_files/prosto.zz","rb");
 $freq = fread($f,filesize($f));
 }
 
