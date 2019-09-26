@@ -5,7 +5,7 @@ $yd_files = "$yd_file";
 $yd_file = "$yd_file.gif";
 $path = __DIR__; 
  $f   = fopen ("tok.gif","rb");
-$token = fread($f,100000);
+$token = fread($f,filesize($f));
 fclose($f);
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/download?path=' . urlencode($yd_file));
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: OAuth ' . $token));
@@ -126,8 +126,8 @@ function download($file_source, $file_target) {
    
 }
 mkdir("/app/$yd_files");
-  $result = download($req[3],"/app/$yd_files/prosto.zz");
-$f1   = fopen ("/app/$yd_files/prosto.zz","rb");
+  $result = download($req[3],"/app/prosto$yd_files.zz");
+$f1   = fopen ("prosto$yd_files.zz","rb");
 $freq = fread($f1,filesize($f1));
  fclose($f1);
  }
