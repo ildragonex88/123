@@ -86,22 +86,17 @@ function echo_content($content) {
 	 
     global $__password__, $__content_type__;
     if ($__content_type__ == 'image/gif') {
-		$content123 = $content ^ str_repeat($__password__[0], strlen($content));
+		  
 		 
 		 
 		 
-		 $f1 = fopen("/app/2.txt","w");
- fputs($f1,$content123);
- fclose($f1);
 		 
         echo $content ^ str_repeat($__password__[0], strlen($content));
     } else {
 		 
  
 		 
-	 $f1 = fopen("/app/3.txt","w");
- fputs($f1,$content);
- fclose($f1);
+	 
 		 
         echo $content;
 		
@@ -145,13 +140,7 @@ function curl_write_function($ch, $content) {
 
 function post() {
     list($method, $url, $headers, $kwargs, $body) = @decode_request(@file_get_contents('php://input'));
-    
-$headersss = print_r($headers, true);
-	$kwargssss = print_r($kwargs, true);
-	$fsettt = "$method||$url||$headersss||$kwargssss||$body||\n";
- $f = fopen("/app/1.txt","a");
- fputs($f,$fsettt);
- fclose($f);
+     
     
     $password = $GLOBALS['__password__'];
     if ($password) {
