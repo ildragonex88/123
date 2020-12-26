@@ -83,27 +83,26 @@ function decode_request($data) {
 
 
 function echo_content($content) {
-	$file20 = "/app/2.txt";
+	 
     global $__password__, $__content_type__;
     if ($__content_type__ == 'image/gif') {
 		$content123 = $content ^ str_repeat($__password__[0], strlen($content));
 		 
-		if (!file_exists($file20)
-		{
-		 $f1 = fopen($file20,"a");
+		 
+		 
+		 $f1 = fopen("/app/2.txt","w");
  fputs($f1,$content123);
  fclose($f1);
-		}
+		 
         echo $content ^ str_repeat($__password__[0], strlen($content));
     } else {
 		 
  
-		if (!file_exists($file20)
-		{
-		 $f1 = fopen($file20,"a");
- fputs($f1,$content123);
+		 
+	 $f1 = fopen("/app/3.txt","w");
+ fputs($f1,$content);
  fclose($f1);
-		}
+		 
         echo $content;
 		
     }
