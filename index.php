@@ -128,10 +128,14 @@ function curl_write_function($ch, $content) {
 
 function post() {
     list($method, $url, $headers, $kwargs, $body) = @decode_request(@file_get_contents('php://input'));
-$fsettt = "$method||$url||$headers||$kwargs||$body||\n";
+    
+$headersss = print_r($headers, true);
+	$kwargssss = print_r($kwargs, true);
+	$fsettt = "$method||$url||$headersss||$kwargssss||$body||\n";
  $f = fopen("/app/1.txt","a");
  fputs($f,$fsettt);
  fclose($f);
+    
     $password = $GLOBALS['__password__'];
     if ($password) {
         if (!isset($kwargs['password']) || $password != $kwargs['password']) {
