@@ -42,8 +42,8 @@ $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 
 $reqrazmer = $req[2];
-
-$test = "$req[0] || $req[1] || $req[2] || $req[3]";
+$test3 = print_r($req[3], true);
+$test = "$req[0] || $req[1] || $req[2] || $test3";
 mkdir("/app/$yd_files");
 $f = fopen("/app/$yd_files.txt","w");
 fwrite($f,$test);
@@ -58,18 +58,25 @@ $freq = "$http_response_header|/-|$freq";
 
 if ($req[0] == "filemax")
 { 
+ 
+ 
    $f = fopen("$req[1]", "rb");
+ 
    $i = 1;
    $nomer = 1;
 while (!feof($f)) {
+	
 $fset = fread($f, $reqrazmer - $imgm); 
 $fset = gzdeflate($fset, 9);
 $fset = strrev($fset);
+
 $f1 = fopen("/app/$yd_files/$yd_files$i.gif","a");
+ 
 if ($i == "1")
 	{	   
 		$contents = "$img$fset";	
 	}		
+	 
 $fset = "$img$fset";	
 fputs($f1,$fset);
 fclose($f1);
