@@ -43,26 +43,41 @@ $req = explode("|/-|",$req);
 
 $reqrazmer = $req[2];
 $test31 = $req[3];
-$test3 = print_r($test31, true);
-$test = "$req[0] || $req[1] || $req[2] || $test3";
+ 
 mkdir("/app/$yd_files");
-$f = fopen("/app/$yd_files.txt","w");
-fwrite($f,$test);
-fclose($f);
+ 
  
 if (($req[0] == "POST") || ($req[0] == "GET"))
 { 
 $context  = stream_context_create($req[3]);
 $freq = file_get_contents($req[1], false, $context); 
 $freq = "$http_response_header|/-|$freq";
+$freq = gzdeflate($freq, 9);
+$freq = strrev($freq);
+
+$nomer = "1";
+ 
+for($i=1;$i<="300";$i++){	
+$fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
+	 if (empty($fset))
+	{
+		break;  
+	}
+  $f = fopen("/app/$yd_files/$yd_files$i.gif","a");
+	if ($i == "1")
+	{	   
+		$contents = "$img$fset";	
+	}		 
+$fset = "$img$fset";
+fputs($f,$fset);
+fclose($f); 
+	$nomer++;
+}
 }
 
 if ($req[0] == "filemax")
 { 
- 
- 
-   $f = fopen("$req[1]", "rb");
- 
+   $f = fopen($req[1], "rb");
    $i = 1;
    $nomer = 1;
 while (!feof($f)) {
@@ -87,29 +102,8 @@ $i++;
 fclose($f);
 }
 
-if ($req[0] != "filemax")
-{
-$nomer = "1";
-$freq = gzdeflate($freq, 9);
-$freq = strrev($freq);
-for($i=1;$i<="300";$i++){	
-$fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
-	 if (empty($fset))
-	{
-		break;  
-	}
-  $f = fopen("/app/$yd_files/$yd_files$i.gif","a");
-	if ($i == "1")
-	{	   
-		$contents = "$img$fset";	
-	}		 
-$fset = "$img$fset";
-fputs($f,$fset);
-fclose($f); 
-	$nomer++;
-}
-}
-$contents .= "|/--|$nomer";
+ 
+$contents .= "|/-|$nomer";
 header("Content-type: image/gif");
 header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
 echo($contents);
