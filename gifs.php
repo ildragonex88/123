@@ -38,9 +38,7 @@ $req  = substr($req, $nomergif);
 $imgm = strlen($img);
 
 
-$ft = fopen("/app/$yd_files.txt","w");
-fputs($ft,$imgm);
-fclose($ft);
+ 
 
 
 $req = strrev($req);
@@ -48,7 +46,9 @@ $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 
 $reqrazmer = $req[2];
- 
+ $ft = fopen("/app/$yd_files.txt","w");
+fputs($ft,$reqrazmer);
+fclose($ft);
  
 mkdir("/app/$yd_files");
  
