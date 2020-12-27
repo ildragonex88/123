@@ -37,11 +37,11 @@ $reqrazmer = $req[2];
  
  mkdir("/app/$yd_files");
  
-if (($req[0] == "post") || ($req[0] == "get"))
+if (($req[0] == "POST") || ($req[0] == "GET"))
 { 
 $context  = stream_context_create($req[3]);
 $freq = file_get_contents($req[1], false, $context); 
-$freq = "$http_response_header|/-|:$freq";
+$freq = "$http_response_header|/-|$freq";
 }
 
 if ($req[0] == "filemax")
