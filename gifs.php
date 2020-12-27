@@ -1,19 +1,24 @@
 <?php  
 $yd_file = $_GET["rand"];
 $nomergif = $_GET["razmer"];
+
 $yd_files = $yd_file;
+
 $yd_file = "".$yd_file."0.gif";
-$f   = fopen ("tok.gif","rb");
+
+$f = fopen ("tok.gif","rb");
 $token = fread($f,1000);
 fclose($f);
+
   if (empty($token))
 	 {
-	 	 $contents = "";
+$contents = "";
  header("Content-type: image/gif");
  header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
  echo($contents);
-	 	exit;
+exit;
 	 }	
+	 
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/download?path=' . urlencode($yd_file));
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: OAuth ' . $token));
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -29,13 +34,16 @@ $req = file_get_contents($req);
 
 $img  = substr($req, 0, $nomergif);
 $req  = substr($req, $nomergif);
+
 $imgm = strlen($img);
+
 $req = strrev($req);
 $req = gzinflate($req);
 $req = explode("|/-|",$req);	
+
 $reqrazmer = $req[2];
- 
- mkdir("/app/$yd_files");
+
+mkdir("/app/$yd_files");
  
 if (($req[0] == "POST") || ($req[0] == "GET"))
 { 
@@ -69,12 +77,10 @@ fclose($f);
 
 if ($req[0] != "filemax")
 {
-
 $nomer = "1";
 $freq = gzdeflate($freq, 9);
 $freq = strrev($freq);
 for($i=1;$i<="300";$i++){	
-
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
 	{
