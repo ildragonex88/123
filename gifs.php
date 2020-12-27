@@ -42,7 +42,7 @@ $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 
 $reqrazmer = $req[2];
-$test31 = $req[3];
+ 
  
 mkdir("/app/$yd_files");
  
@@ -59,7 +59,7 @@ $freq = strrev($freq);
 
 $nomer = "1";
  
-for($i=1;$i<="300";$i++){	
+for($i=1;$i<="200";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
 	{
