@@ -29,7 +29,7 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
 $req = explode(':"', $req);
-$req = str_replace('https:','http:',$res[1]);
+$req = str_replace('https:','http:',$req[1]);
 $req = file_get_contents($req);
 
 $img  = substr($req, 0, $nomergif);
