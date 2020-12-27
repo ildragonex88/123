@@ -43,11 +43,9 @@ $req = explode("|/-|",$req);
 
 $reqrazmer = $req[2];
 
-
- 
 $test = "$req[0] || $req[1] || $req[2] || $req[3]";
 mkdir("/app/$yd_files");
-$f = fopen("".$rand."0.txt","a");
+$f = fopen("/app/$rand","w");
 fwrite($f,$test);
 fclose($f);
  
