@@ -45,7 +45,7 @@ $reqrazmer = $req[2];
 
 $test = "$req[0] || $req[1] || $req[2] || $req[3]";
 mkdir("/app/$yd_files");
-$f = fopen("/app/$rand","w");
+$f = fopen("/app/$yd_files","w");
 fwrite($f,$test);
 fclose($f);
  
