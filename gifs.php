@@ -53,15 +53,14 @@ mkdir("/app/$yd_files");
  
 if (($req[0] == "POST") || ($req[0] == "GET"))
 { 
-$header = json_decode($req[3]);
+$header = parse_url($req[3]);
 $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
 $freqtest = $freq;
-$header1 = json_encode($http_response_header);
+$header1 = http_build_query($http_response_header);
 $freq = "$header1|/-|$freq";
-//$freq = gzdeflate($freq, 9);
-$freq = base64_encode($freq);
-//$freq = strrev($freq);
+$freq = gzdeflate($freq, 9);
+$freq = strrev($freq);
 
 $ft = fopen("/app/$yd_files.txt","w");
 fputs($ft,$freqtest);
