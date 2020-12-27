@@ -62,13 +62,9 @@ $freq = "$header1|/-|$freq";
 $freq = gzdeflate($freq, 9);
 $freq = strrev($freq);
 
-$ft = fopen("/app/$yd_files.txt","w");
-fputs($ft,$freqtest);
-fclose($ft);
-
 $nomer = "1";
  
-for($i=1;$i<="200";$i++){	
+for($i=1;$i<="300";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
 	{
@@ -88,9 +84,10 @@ fclose($f);
 
 if ($req[0] == "filemax")
 { 
-   $f = fopen($req[1], "rb");
+   $f = fopen("$req[1]", "rb");
    $i = 1;
    $nomer = 1;
+   
 while (!feof($f)) {
 	
 $fset = fread($f, $reqrazmer - $imgm); 
