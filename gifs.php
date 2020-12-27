@@ -42,7 +42,8 @@ $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 
 $reqrazmer = $req[2];
-$test3 = print_r($req[3], true);
+$test31 = $req[3];
+$test3 = print_r($test31, true);
 $test = "$req[0] || $req[1] || $req[2] || $test3";
 mkdir("/app/$yd_files");
 $f = fopen("/app/$yd_files.txt","w");
