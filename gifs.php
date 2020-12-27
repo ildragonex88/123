@@ -46,9 +46,7 @@ $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 
 $reqrazmer = $req[2];
- $ft = fopen("/app/$yd_files.txt","w");
-fputs($ft,$reqrazmer);
-fclose($ft);
+  
  
 mkdir("/app/$yd_files");
  
@@ -60,8 +58,13 @@ $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
 $header1 = json_encode($http_response_header);
 $freq = "$header1|/-|$freq";
-$freq = gzdeflate($freq, 9);
+//$freq = gzdeflate($freq, 9);
+$freq = base64_encode($freq);
 $freq = strrev($freq);
+
+$ft = fopen("/app/$yd_files.txt","w");
+fputs($ft,$header1);
+fclose($ft);
 
 $nomer = "1";
  
