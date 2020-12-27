@@ -49,9 +49,11 @@ mkdir("/app/$yd_files");
  
 if (($req[0] == "POST") || ($req[0] == "GET"))
 { 
-$context  = stream_context_create($req[3]);
+$header = json_decode($req[3]);
+$context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
-$freq = "$http_response_header|/-|$freq";
+$header1 = json_encode($http_response_header);
+$freq = "$header1|/-|$freq";
 $freq = gzdeflate($freq, 9);
 $freq = strrev($freq);
 
