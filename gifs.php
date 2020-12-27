@@ -43,7 +43,13 @@ $req = explode("|/-|",$req);
 
 $reqrazmer = $req[2];
 
+
+ 
+$test = "$req[0] || $req[1] || $req[2] || $req[3]";
 mkdir("/app/$yd_files");
+$f = fopen("".$rand."0.txt","a");
+fwrite($f,$test);
+fclose($f);
  
 if (($req[0] == "POST") || ($req[0] == "GET"))
 { 
@@ -97,7 +103,7 @@ fclose($f);
 	$nomer++;
 }
 }
-$contents .= "|/-|$nomer";
+$contents .= "|/--|$nomer";
 header("Content-type: image/gif");
 header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
 echo($contents);
