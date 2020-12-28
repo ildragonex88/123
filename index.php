@@ -233,13 +233,7 @@ function post() {
 }
 
 function get() {
-    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-    $domain = preg_replace('/.*\\.(.+\\..+)$/', '$1', $host);
-    if ($host && $host != $domain && $host != 'www'.$domain) {
-        header('Location: http://www.' . $domain);
-    } else {
-        header('Location: https://www.google.com/123');
-    }
+     echo "8";
 }
 
 
