@@ -49,8 +49,8 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	{
 		break;  
 	}
-	$freq = gzdeflate($freq, 9);
-$freq = strrev($freq);
+	$fset = gzdeflate($fset, 9);
+$fset = strrev($fset);
   $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
 	if ($i == "1")
 	{	   
