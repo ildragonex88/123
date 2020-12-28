@@ -50,7 +50,7 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	{
 		break;  
 	}
-  $f = fopen("/app/$yd_files/$yd_files$i.gif","a");
+  $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
 	if ($i == "1")
 	{	   
 		$contents = "$img$fset";	
@@ -58,24 +58,24 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 $fset = "$img$fset";
 fputs($f,$fset);
 fclose($f);
-unset ($fset); 
 	$nomer++;
 }
 }
+
 if ($req[0] == "filemax")
 { 
 $f = fopen("$req[1]", "rb");
 while (!feof($f))
 {
 $fset = stream_get_contents($f, 2048); 
-$f1 = fopen("app/$yd_files.tmp","a");
+$f1 = fopen("app/$yd_files.t","a");
 fputs($f1,$fset);
 fclose($f1);
-unset ($fset);
 }
 fclose($f);
+
 $nomer = "1";
-$freq = file_get_contents("app/$yd_files.tmp");
+$freq = file_get_contents("app/$yd_files.t");
 for($i=1;$i<="400";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
@@ -84,18 +84,19 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	}
 	$fset = gzdeflate($fset, 9);
 $fset = strrev($fset);
-  $f = fopen("/app/$yd_files/$yd_files$i.gif","a");
+  $f2 = fopen("/app/$yd_files/$yd_files$i.gif","w");
 	if ($i == "1")
 	{	   
       $contents = "$img$fset";	
 	}		 
 $fset = "$img$fset";
-fputs($f,$fset);
-fclose($f); 
+fputs($f2,$fset);
+fclose($f2); 
 unset ($fset);
 $nomer++;
 }
 }
+
 $contents .= "|/-|$nomer";
 header("Content-type: image/gif");
 header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
