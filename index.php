@@ -1,16 +1,12 @@
 <?php
-
-
 $__version__  = '3.1.2';
 $__password__ = '345';
-$__hostsdeny__ = array(); // $__hostsdeny__ = array('.youtube.com', '.youku.com');
+$__hostsdeny__ = array();
 $__content_type__ = 'image/gif';
 $__timeout__ = 20;
 $__content__ = '';
-
-
 function message_html($title, $banner, $detail) {
-    $error = <<<MESSAGE_STRING
+$error = <<<MESSAGE_STRING
 <html><head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <title>${title}</title>
@@ -33,7 +29,6 @@ A.u:link {color: green}
 <blockquote>
 <H1>${banner}</H1>
 ${detail}
-
 <p>
 </blockquote>
 <table width=100% cellpadding=0 cellspacing=0><tr><td bgcolor=#3366cc><img alt="" width=1 height=4></td></tr></table>
@@ -41,8 +36,6 @@ ${detail}
 MESSAGE_STRING;
     return $error;
 }
-
-
 function decode_request($data) {
     list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
     $headers_data = gzinflate(substr($data, 2, $headers_length));
@@ -80,30 +73,14 @@ function decode_request($data) {
     }
     return array($method, $url, $headers, $kwargs, $body);
 }
-
-
-function echo_content($content) {
-	 
+function echo_content($content) { 
     global $__password__, $__content_type__;
-    if ($__content_type__ == 'image/gif') {
-		  
-		 
-		 
-		 
-		 
+    if ($__content_type__ == 'image/gif') {	 	 
         echo $content ^ str_repeat($__password__[0], strlen($content));
-    } else {
-		 
- 
-		 
-	 
-		 
-        echo $content;
-		
+    } else { 
+        echo $content;	
     }
 }
-
-
 function curl_header_function($ch, $header) {
     global $__content__, $__content_type__;
     $pos = strpos($header, ':');
@@ -123,25 +100,17 @@ function curl_header_function($ch, $header) {
     }
     return strlen($header);
 }
-
-
 function curl_write_function($ch, $content) {
     global $__content__;
     if ($__content__) {
-        // for debug
-        // echo_content("HTTP/1.0 200 OK\r\nContent-Type: text/plain\r\n\r\n");
         echo_content($__content__);
         $__content__ = '';
     }
     echo_content($content);
     return strlen($content);
 }
-
-
 function post() {
     list($method, $url, $headers, $kwargs, $body) = @decode_request(@file_get_contents('php://input'));
-     
-    
     $password = $GLOBALS['__password__'];
     if ($password) {
         if (!isset($kwargs['password']) || $password != $kwargs['password']) {
@@ -150,7 +119,6 @@ function post() {
             exit(-1);
         }
     }
-
     $hostsdeny = $GLOBALS['__hostsdeny__'];
     if ($hostsdeny) {
         $urlparts = parse_url($url);
@@ -162,23 +130,18 @@ function post() {
             }
         }
     }
-
     if ($body) {
         $headers['Content-Length'] = strval(strlen($body));
     }
     if (isset($headers['Connection'])) {
         $headers['Connection'] = 'close';
     }
-
     $header_array = array();
     foreach ($headers as $key => $value) {
         $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
     }
-
     $timeout = $GLOBALS['__timeout__'];
-
     $curl_opt = array();
-
     switch (strtoupper($method)) {
         case 'HEAD':
             $curl_opt[CURLOPT_NOBODY] = true;
@@ -198,24 +161,18 @@ function post() {
             echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));
             exit(-1);
     }
-
     $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
     $curl_opt[CURLOPT_RETURNTRANSFER] = true;
     $curl_opt[CURLOPT_BINARYTRANSFER] = true;
-
     $curl_opt[CURLOPT_HEADER]         = false;
     $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
     $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
-
     $curl_opt[CURLOPT_FAILONERROR]    = false;
     $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-
     $curl_opt[CURLOPT_CONNECTTIMEOUT] = $timeout;
     $curl_opt[CURLOPT_TIMEOUT]        = $timeout;
-
     $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
     $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-
     $ch = curl_init($url);
     curl_setopt_array($ch, $curl_opt);
     $ret = curl_exec($ch);
@@ -244,5 +201,4 @@ function main() {
         get();
     }
 }
-
 main();
