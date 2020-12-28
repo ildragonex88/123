@@ -86,14 +86,14 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	}
 	$fset = gzdeflate($fset, 9);
 $fset = strrev($fset);
+  $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
 	if ($i == "1")
 	{	   
-      $contents = "$img$fset";	
+		$contents = "$img$fset";	
 	}		 
-	$f2 = fopen("/app/$yd_files/$yd_files$i.gif","w");  
 $fset = "$img$fset";
-fputs($f2,$fset);
-fclose($f2); 
+fputs($f,$fset);
+fclose($f);
 unset($fset);
 $nomer++;
 }
