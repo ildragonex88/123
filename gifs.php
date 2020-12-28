@@ -37,10 +37,10 @@ mkdir("/app/$yd_files");
 
 if ($req[0] != "filemax")
 { 
-$header = parse_url($req[3]);
+$header = unserialize($req[3]);
 $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
-$header1 = http_build_query($http_response_header);
+$header1 = serialize($http_response_header);
 $freq = "$header1|/-|$freq";
 $nomer = "1";
 for($i=1;$i<="400";$i++){	
