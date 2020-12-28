@@ -188,12 +188,9 @@ function post() {
     }
     curl_close($ch);
 }
-
 function get() {
      echo "8";
 }
-
-
 function main() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         post();
