@@ -33,6 +33,7 @@ $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 $reqrazmer = $req[2];
 mkdir("/app/$yd_files");
+
 if ($req[0] != "filemax")
 { 
 $header = parse_url($req[3]);
@@ -68,14 +69,14 @@ $f = fopen("$req[1]", "rb");
 while (!feof($f))
 {
 $fset = stream_get_contents($f, 2048); 
-$f1 = fopen("app/$yd_files.t","a");
+$f1 = fopen("/app/$yd_files.t","a");
 fputs($f1,$fset);
 fclose($f1);
 }
 fclose($f);
 
 $nomer = "1";
-$freq = file_get_contents("app/$yd_files.t");
+$freq = file_get_contents("/app/$yd_files.t");
 for($i=1;$i<="400";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
