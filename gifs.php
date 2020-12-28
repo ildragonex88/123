@@ -32,6 +32,7 @@ $req = strrev($req);
 $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 $reqrazmer = $req[2];
+
 mkdir("/app/$yd_files");
 
 if ($req[0] != "filemax")
@@ -51,7 +52,7 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	{
 		break;  
 	}
-  $f = fopen("/app/$yd_files/$yd_files$i.gif","a");
+  $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
 	if ($i == "1")
 	{	   
 		$contents = "$img$fset";	
@@ -65,18 +66,18 @@ fclose($f);
 
 if (($req[0] == "filemax") || ($req[0] === "filemax"))
 { 
-$f = fopen("$req[1]", "rb");
+$f = fopen($req[1], "rb"); // $req[1]
 while (!feof($f))
 {
 $fset = stream_get_contents($f, 2048); 
-$f1 = fopen("/app/$yd_files.t","a");
+$f1 = fopen("/app/$yd_files.t","a"); // /app/
 fputs($f1,$fset);
 fclose($f1);
 }
 fclose($f);
 
 $nomer = "1";
-$freq = file_get_contents("/app/$yd_files.t");
+$freq = file_get_contents("/app/$yd_files.t"); // /app/$yd_files.t
 for($i=1;$i<="400";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
@@ -89,11 +90,11 @@ $fset = strrev($fset);
 	{	   
       $contents = "$img$fset";	
 	}		 
-	$f2 = fopen("/app/$yd_files/$yd_files$i.gif","a");
+	$f2 = fopen("/app/$yd_files/$yd_files$i.gif","w"); // /app
 $fset = "$img$fset";
 fputs($f2,$fset);
 fclose($f2); 
-unset ($fset);
+unset($fset);
 $nomer++;
 }
 }
