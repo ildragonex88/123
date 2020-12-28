@@ -4,7 +4,7 @@ $nomergif = $_GET["razmer"];
 $yd_files = $yd_file;
 $yd_file = "".$yd_file."0.gif";
 $f = fopen ("tok.gif","rb");
-$token = fread($f,1000);
+$token = fread($f,100);
 fclose($f);
   if (empty($token))
 	 {
@@ -40,7 +40,6 @@ if ($req[0] != "filemax")
 $header = parse_url($req[3]);
 $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
-$freqtest = $freq;
 $header1 = http_build_query($http_response_header);
 $freq = "$header1|/-|$freq";
 $freq = gzdeflate($freq, 9);
@@ -60,24 +59,25 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 $fset = "$img$fset";
 fputs($f,$fset);
 fclose($f);
-	$nomer++;
+unset($fset);
+$nomer++;
 }
 }
 
 if (($req[0] == "filemax") || ($req[0] === "filemax"))
 { 
-$f = fopen($req[1], "rb"); // $req[1]
+$f = fopen($req[1], "rb");  
 while (!feof($f))
 {
 $fset = stream_get_contents($f, 2048); 
-$f1 = fopen("/app/$yd_files.t","a"); // /app/
+$f1 = fopen("/app/$yd_files.t","a");  
 fputs($f1,$fset);
 fclose($f1);
 }
 fclose($f);
 
 $nomer = "1";
-$freq = file_get_contents("/app/$yd_files.t"); // /app/$yd_files.t
+$freq = file_get_contents("/app/$yd_files.t");  
 for($i=1;$i<="400";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
@@ -90,7 +90,7 @@ $fset = strrev($fset);
 	{	   
       $contents = "$img$fset";	
 	}		 
-	$f2 = fopen("/app/$yd_files/$yd_files$i.gif","w"); // /app
+	$f2 = fopen("/app/$yd_files/$yd_files$i.gif","w");  
 $fset = "$img$fset";
 fputs($f2,$fset);
 fclose($f2); 
