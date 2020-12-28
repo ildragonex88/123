@@ -64,7 +64,7 @@ $nomer++;
 }
 }
 
-if (($req[0] == "filemax") || ($req[0] === "filemax"))
+if ($req[0] == "filemax")
 { 
 $f = fopen($req[1], "rb");  
 while (!feof($f))
