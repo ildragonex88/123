@@ -42,8 +42,6 @@ $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
 $header1 = http_build_query($http_response_header);
 $freq = "$header1|/-|$freq";
-$freq = gzdeflate($freq, 9);
-$freq = strrev($freq);
 $nomer = "1";
 for($i=1;$i<="400";$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
@@ -51,6 +49,8 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	{
 		break;  
 	}
+	$freq = gzdeflate($freq, 9);
+$freq = strrev($freq);
   $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
 	if ($i == "1")
 	{	   
