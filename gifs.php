@@ -31,8 +31,8 @@ $imgm = strlen($img);
 $req = strrev($req);
 $req = gzinflate($req);
 $req = explode("|/-|",$req);	
-$reqrazmer = $req[2];
 mkdir("/app/$yd_files");
+$rrr = $req[2] - $imgm;
 if ($req[0] != "df")
 { 
 $header = unserialize($req[3]);
@@ -42,7 +42,7 @@ $header = serialize($http_response_header);
 $freq = "$header|/-|$freq";
 $nomer = "0";
 for($i=1;$i<=400;$i++){	
-$fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
+$fset = substr($freq, $rrr*($i-1), $rrr); 
 	 if (empty($fset))
 	{
 		break;  
@@ -61,28 +61,22 @@ $nomer++;
 }
 }
 if ($req[0] == "df")
-{ 
-$f = fopen($req[1], "rb");
-$nomer = 0;  
-$echo = '';
+{  
+$f = fopen($req[1],'rb');  
+$nomer = 0;
 while (!feof($f))
 {
-$fset = stream_get_contents($f, 4096); 
-$echo .= $fset;
-if (strlen($echo) >= ($reqrazmer - $imgm))
-{
-	$nomer++;
-$f1 = fopen("/app/$yd_files/$yd_files$nomer.gif","w"); 
-$echo = gzdeflate($echo, 9);
-$echo = strrev($echo); 
-$fset = "$img$echo";
-fputs($f1,$fset);
+$nomer++;
+$echo =  stream_get_contents($f, $rrr, -1);
+$f1 = fopen("app/$yd_files/$yd_files$nomer.gif","w");  
+$echo = gzdeflate($echo, 9); 
+$echo = strrev($echo);  
+$fset = "$img$echo"; 
+fputs($f1,$fset); 
 fclose($f1);
-if ($nomer == "1")
-	{	   
-		$contents = $fset;	
-	}	
-$echo = '';
+if ($nomer == 1)
+{
+$contents = $fset;
 }
 }
 fclose($f);
