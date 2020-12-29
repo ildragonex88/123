@@ -8,10 +8,10 @@ $token = fread($f,100);
 fclose($f);
   if (empty($token))
 	 {
-$contents = "";
+$contents = '';
  header("Content-type: image/gif");
  header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
- echo($contents);
+ echo $contents;
 exit;
 	 } 
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/download?path=' . urlencode($yd_file));
@@ -20,11 +20,11 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HEADER, false);
 $req = curl_exec($ch);
-$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 $req = explode(':"', $req);
 $req = str_replace('https:','http:',$req[1]);
-$req = file_get_contents($req);
+$req = explode('","', $req);
+$req = file_get_contents($req[0]);
 $img  = substr($req, 0, $nomergif);
 $req  = substr($req, $nomergif);
 $imgm = strlen($img);
@@ -32,18 +32,16 @@ $req = strrev($req);
 $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 $reqrazmer = $req[2];
-
 mkdir("/app/$yd_files");
-
-if ($req[0] != "filemax")
+if ($req[0] != "df")
 { 
 $header = unserialize($req[3]);
 $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
-$header1 = serialize($http_response_header);
-$freq = "$header1|/-|$freq";
-$nomer = "1";
-for($i=1;$i<="400";$i++){	
+$header = serialize($http_response_header);
+$freq = "$header|/-|$freq";
+$nomer = "0";
+for($i=1;$i<=400;$i++){	
 $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
 	 if (empty($fset))
 	{
@@ -52,53 +50,43 @@ $fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm));
 	$fset = gzdeflate($fset, 9);
 $fset = strrev($fset);
   $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
+  $fset = "$img$fset";
 	if ($i == "1")
 	{	   
-		$contents = "$img$fset";	
+		$contents = $fset;	
 	}		 
-$fset = "$img$fset";
 fputs($f,$fset);
 fclose($f);
-unset($fset);
 $nomer++;
 }
 }
-
-if ($req[0] == "filemax")
+if ($req[0] == "df")
 { 
-$f = fopen($req[1], "rb");  
+$f = fopen($req[1], "rb");
+$nomer = 0;  
+$echo = '';
 while (!feof($f))
 {
-$fset = stream_get_contents($f, 2048); 
-$f1 = fopen("/app/$yd_files.t","a");  
+$fset = stream_get_contents($f, 4096); 
+$echo .= $fset;
+if (strlen($echo) >= ($reqrazmer - $imgm))
+{
+	$nomer++;
+$f1 = fopen("/app/$yd_files/$yd_files$nomer.gif","w"); 
+$echo = gzdeflate($echo, 9);
+$echo = strrev($echo); 
+$fset = "$img$echo";
 fputs($f1,$fset);
 fclose($f1);
-}
-fclose($f);
-
-$nomer = "1";
-$freq = file_get_contents("/app/$yd_files.t");  
-for($i=1;$i<="400";$i++){	
-$fset = substr($freq, ($reqrazmer - $imgm)*($i-1), ($reqrazmer - $imgm)); 
-	 if (empty($fset))
-	{
-		break;  
-	}
-	$fset = gzdeflate($fset, 9);
-$fset = strrev($fset);
-  $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
-	if ($i == "1")
+if ($nomer == "1")
 	{	   
-		$contents = "$img$fset";	
-	}		 
-$fset = "$img$fset";
-fputs($f,$fset);
+		$contents = $fset;	
+	}	
+$echo = '';
+}
+}
 fclose($f);
-unset($fset);
-$nomer++;
 }
-}
-
 $contents .= "|/-|$nomer";
 header("Content-type: image/gif");
 header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
