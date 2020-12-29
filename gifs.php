@@ -60,15 +60,16 @@ fclose($f);
 $nomer++;
 }
 }
+
 if ($req[0] == "df")
 {  
-$f = fopen($req[1],'rb');  
+$f = fopen($req[1],'r');  
 $nomer = 0;
 while (!feof($f))
 {
 $nomer++;
-$echo =  stream_get_contents($f, $rrr, -1);
-$f1 = fopen("app/$yd_files/$yd_files$nomer.gif","w");  
+$echo = stream_get_contents($f, $rrr, -1);
+$f1 = fopen("/app/$yd_files/$yd_files$nomer.gif","w");  
 $echo = gzdeflate($echo, 9); 
 $echo = strrev($echo);  
 $fset = "$img$echo"; 
