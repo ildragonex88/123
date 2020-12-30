@@ -40,7 +40,7 @@ $context  = stream_context_create($header);
 $freq = file_get_contents($req[1], false, $context); 
 $header = serialize($http_response_header);
 $freq = "$header|/-|$freq";
-$nomer = "0";
+$nomer = 0;
 for($i=1;$i<=400;$i++){	
 $fset = substr($freq, $rrr*($i-1), $rrr); 
 	 if (empty($fset))
@@ -51,7 +51,7 @@ $fset = substr($freq, $rrr*($i-1), $rrr);
 $fset = strrev($fset);
   $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
   $fset = "$img$fset";
-	if ($i == "1")
+	if ($i == 1)
 	{	   
 		$contents = $fset;	
 	}		 
@@ -63,7 +63,7 @@ $nomer++;
 
 if ($req[0] == "df")
 {  
-$f = fopen($req[1],'r');  
+$f = fopen($req[1],'rb');  
 $nomer = 0;
 while (!feof($f))
 {
