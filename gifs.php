@@ -8,10 +8,9 @@ $token = fread($f,100);
 fclose($f);
   if (empty($token))
 	 {
-$contents = '';
- header("Content-type: image/gif");
- header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
- echo $contents;
+header("Content-type: image/gif");
+header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
+echo 't';
 exit;
 	 } 
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/download?path=' . urlencode($yd_file));
@@ -25,10 +24,18 @@ $req = explode(':"', $req);
 $req = str_replace('https:','http:',$req[1]);
 $req = explode('","', $req);
 $req = file_get_contents($req[0]);
+ if (empty($req))
+	 {
+ header("Content-type: image/gif");
+ header("Content-Disposition: attachment; filename=".$yd_files."1.gif");
+ echo 'y';
+exit;
+	 }
 $img  = substr($req, 0, $nomergif);
 $req  = substr($req, $nomergif);
 $imgm = strlen($img);
 $req = strrev($req);
+$req  = $req ^ str_repeat("345a", strlen($req));
 $req = gzinflate($req);
 $req = explode("|/-|",$req);	
 mkdir("/app/$yd_files");
@@ -47,17 +54,17 @@ $fset = substr($freq, $rrr*($i-1), $rrr);
 	{
 		break;  
 	}
+$nomer++;
 	$fset = gzdeflate($fset, 9);
-$fset = strrev($fset);
+	$fset  = $fset ^ str_repeat($req[4], strlen($fset));
   $f = fopen("/app/$yd_files/$yd_files$i.gif","w");
   $fset = "$img$fset";
-	if ($i == 1)
-	{	   
-		$contents = $fset;	
+	if ($nomer == 1)
+	{	
+$contents = $fset;
 	}		 
-fputs($f,$fset);
+fwrite($f,$fset);
 fclose($f);
-$nomer++;
 }
 }
 if ($req[0] == "df")
@@ -68,16 +75,16 @@ while (!feof($f))
 {
 $nomer++;
 $fset = stream_get_contents($f, $rrr, -1); 
-$fset = gzdeflate($fset, 9); 
-$fset = strrev($fset);  
+$fset = gzdeflate($fset, 1);
+$fset  = $fset ^ str_repeat($req[4], strlen($fset));  
 $fset = "$img$fset"; 
 $f1 = fopen("/app/$yd_files/$yd_files$nomer.gif","w"); 
-fputs($f1,$fset); 
-fclose($f1);
 if ($nomer == 1)
 {
 $contents = $fset;
 }
+fwrite($f1,$fset); 
+fclose($f1);
 }
 fclose($f);
 }
